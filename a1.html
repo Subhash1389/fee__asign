@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: aquamarine;
+        }
+        table{
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .print{
+            display: inline-block;
+            text-align: left;
+        }
+        .div1{
+            margin-left: 20px;
+            margin-top: 100px;
+
+        }
+        .div2{
+            margin-bottom: 150px;
+            margin-left: 200px;
+            margin-right: 200px
+    
+        }
+        li{
+            margin-left: auto;
+            margin-right: auto;
+            list-style: none;
+            
+        }
+        a{
+            text-decoration: none;
+            color: black;
+            text-emphasis-style: bold;
+    
+    
+        }
+        a:hover{
+            color: red;
+        }
+
+    </style>
+    
+</head>
+<body>
+   <div class="paren">
+    <div class="div1">
+        <a href="a.html"><h3>Product To ADD</h3></a>
+        
+
+    </div>
+    <div class="div2">
+        <div style="text-align: center; text-decoration: underline;">
+            <h1> Details Of All Products</h1>
+    
+        </div>
+        <div class="divu">
+            <ul class="productlist" id="hello">
+                
+
+                
+            </ul>
+        </div>
+    </div>
+   </div>
+
+    <script>
+    function showproduct(){
+    let productjson=localStorage.getItem("products");
+    let productinfo=JSON.parse(productjson);
+    
+    
+    let productlist=document.querySelector(".productlist");
+    productlist.innerHTML=""
+    
+    for( let i=0;i<productinfo.length;i++){
+        let productitem=productinfo[i];
+        console.log(productitem);
+        let li=document.createElement("li");
+        li.innerHTML=`<li>
+                    <table>
+                        <tr>
+                            <td>PRODUCT ID</td>
+                            <td>${productitem.id}</td>
+                            
+                            
+    
+                        </tr>
+                        <tr>
+                            <td>PRODUCT NAME</td>
+                            <td>${productitem.name}</td>
+                            
+    
+                        </tr>
+                        <tr>
+                            <td>PRODUCT QUANTITY</td>
+                            <td>${productitem.quantity}</td>
+                            
+    
+                        </tr>
+                        <tr>
+                            <td>PRODUCT PRICE</td>
+                            <td>${productitem.price}</td>
+                            <td><button class="delete" dells="${productitem.id}">delete</button></td>
+                            
+    
+                        </tr>
+                        
+                    </table>
+                    
+                </li>`
+    
+    productlist.append(li);
+    }}
+    showproduct();
+
+    //delete product
+    let list=document.querySelector(".productlist");
+    list.addEventListener("click",function(ev){
+        console.log(ev);
+        let currentelement=ev.target;
+        let classname=ev.target.className;
+        if(classname=="delete"){
+            let item=currentelement.parentElement.parentElement.parentElement;
+            let arr=localStorage.getItem("products");
+
+            let arr1=JSON.parse(arr);
+    
+
+            let id=ev.target.getAttribute("dells");
+            let newProduct=arr1.filter((val)=>{
+               if(val.id==id){
+                return val.quantity--;
+               }
+               else{
+                return val;
+               }
+            })
+            
+            localStorage.setItem("products",JSON.stringify(newProduct));
+            
+            item.remove();
+            showproduct();
+
+        }
+    })
+    </script>
+</body>
+</html>
